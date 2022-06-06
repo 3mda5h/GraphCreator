@@ -9,12 +9,13 @@ class Graph
 {
   public:
   Graph();
-  void addVertex(char* lable);
+  void addVertex();
   void printAdjacencies();
+  void addEdge();
   private:
-  bool graph[20][20];
+  int graph[20][20];
   int index;
-  char lables[];
+  char lables[20];
 };
 
 #endif
