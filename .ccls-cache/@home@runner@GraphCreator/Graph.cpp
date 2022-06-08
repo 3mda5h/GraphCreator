@@ -11,9 +11,10 @@ Graph::Graph()
   {
     for(int j = 0; j < 20; j++)
     {
-      graph[i][j] = 0;    
+      graph[i][j] = -1;    
     }
   }
+  for(int i = 0; i < 20; i++) lables[i] = ' ';
 }
 
 void Graph::addVertex()
@@ -34,16 +35,20 @@ void Graph::addEdge()
   cout << "From vertex: " << endl;
   cin.get(startV);
   cout << "To vertex: " << endl;
-  cin.get(endV);
   cin.ignore();
+  cin.get(endV);
   cout << "Weight?" << endl;
   cin.ignore();
   cin.getline(weight, 10);
-  int x;
-  int y;
-  for(int i = 0; i < 20; i++) if(lables[i] == startV) x = i;
-  for(int i = 0; i < 20; i++) if(lables[i] == endV) y = i;
-  graph[x][y] = atoi(weight);
+  int x = -1;
+  int y = -1;
+  for(int i = 0; i < index; i++) if(lables[i] == startV) x = i;
+  for(int i = 0; i < index; i++) if(lables[i] == endV) y = i;
+  cout << "x: " << x << endl;
+  cout << "y: " << y << endl;
+  cout << "w: " << weight << endl;
+  if(x == -1 || y == -1) cout << "one of these verticies doesn't exist" << endl;
+  else graph[x][y] = atoi(weight);
 }
 
 void Graph::printAdjacencies()
@@ -55,7 +60,8 @@ void Graph::printAdjacencies()
     cout << lables[i] << "  ";
     for(int j = 0; j < index; j++)
     {
-      cout << graph[j][i] << "   " ; 
+      if(graph[j][i] == -1) cout << "f   " ; 
+      else cout << graph[j][i] << "   " ;
     }
     cout << endl;
     cout << endl;

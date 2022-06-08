@@ -8,6 +8,15 @@ int main()
 {
   Graph* graph = new Graph();
   char input[10];
+  /* char c;
+  char c2;
+  cin.get(c);
+  cin.ignore();
+  cin.get(c2);
+  cout << c << endl;
+  cout << c2 << endl;
+  if(c == c2) cout << "same" << endl;
+  */
   while(strcmp(input, "quit") != 0)
   {
     cout << "enter AV (add vertex), AE (add edge) PRINT" << endl;
