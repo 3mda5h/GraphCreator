@@ -17,5 +17,6 @@ int main()
     else if(strcmp(input, "print") == 0) graph->printAdjacencies();
     else if(strcmp(input, "ae") == 0) graph->addEdge();
     else if(strcmp(input, "rv") == 0) graph->removeVertex(); 
+    else if(strcmp(input, "re") == 0) graph->removeEdge();
   }
 }
