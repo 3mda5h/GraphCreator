@@ -85,6 +85,7 @@ void Graph::removeVertex()
   {
     if(vertexes[i] && vertexes[i]->lable == lable) 
     {
+      delete vertexes[i];
       vertexes[i] = NULL;
       for(int j = 0; j < 20; j++) 
       {
@@ -111,28 +112,29 @@ void Graph::removeEdge()
 
 void Graph::shortestPath()
 {
-  /*
   char input;
-  Node* startV = new Node();;
-  Node* endV;
-  Node* visited[20]; 
-  Node* unvisited[20];
-  int j = 0;
+  Vertex* startV = new Vertex();;
+  Vertex* endV;
+  Vertex* visited[20];
+  for(int i = 0; i < 20; i++) visited[i] = NULL;
+  Vertex* unvisited[20];
+  for(int i = 0; i < 20; i++) unvisited[j] = vertexes[i]; 
   cout << "From vertex: " << endl;
   cin.get(input);
-  for(int i = 0; i < 20; i++) if(vertexes[i] == input) start
-  startV = 
-  startV->
-  for(int i = 0; i < 20; i++)
+  for(int i = 0; i < 20; i++) if(vertexes[i]->lable == input) startV = vertexes[i];
   cout << "To vertex: " << endl;
   cin.get(input);
+  for(int i = 0; i < 20; i++) if(vertexes[i]->lable == input) endV = vertexes[i];
   cin.ignore();
-  int currentV = startV;
-  while()
+
+
+  //reset the stuff
+  for(int i = 0; i < 20; i++)
   {
-   
-  } */
-  
+    vertexes[i]->shortestD = 1000000;
+    vertexes[i]->previousV = NULL;
+  }
+
 }
 
 void Graph::printAdjacencies()
