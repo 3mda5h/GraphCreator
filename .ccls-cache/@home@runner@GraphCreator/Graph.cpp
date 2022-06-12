@@ -6,31 +6,45 @@ using namespace std;
 
 Graph::Graph()
 {
-  // -2 = node does not exist    -1 = node exists but no connection,
-  for(int i = 0; i < 20; i++) for(int j = 0; j < 20; j++) graph[i][j] = -2;    
-  for(int i = 0; i < 20; i++) lables[i] = ' ';
+  // -2 = node does not exist    -1 = node exists but no connection,  positive # = weight of connection
+  for(int i = 0; i < 20; i++) for(int j = 0; j < 20; j++) graph[i][j] = -2; //graph[][]keeps track of connections   
+  for(int i = 0; i < 20; i++) vertexes[i] = NULL; //vertexes[] keeps track of names of vertexes
 }
 
+//adds vertex (node) to adjacency matrix
 void Graph::addVertex()
 {
   char newLable;
   cout << "vertex lable?" << endl;
   cin.get(newLable);
+  for(int i = 0; i < 20; i++) 
+  {
+    if(vertexes[i] && vertexes[i]->lable == newLable)
+    {
+      cout << "A vertex with that lable already exists!" << endl;
+      cin.ignore();
+      return;
+    }
+  }
   cin.ignore();
   int index;
   for(int i = 0; i < 20; i++) 
   {
-     if(lables[i] == ' ')
+     if(vertexes[i] == NULL) //insert in first empty spot
      {
-       lables[i] = newLable;
+       vertexes[i] = new Vertex;
+       vertexes[i]->lable = newLable;
+       vertexes[i]->indexInMatrix = i;
        index = i;
        break;
      }
   }
-  for(int i = 0; i < 20; i++) if(lables[i] != ' ') graph[i][index] = -1;
-  for(int i = 0; i < 20; i++) if(lables[i] != ' ') graph[index][i] = -1;
+  for(int i = 0; i < 20; i++) if(vertexes[i] != NULL) graph[i][index] = -1;
+  for(int i = 0; i < 20; i++) if(vertexes[i] != NULL) graph[index][i] = -1;
+  cout << "Vertex added" << endl;
 }
 
+//adds edge (connection between to vertexes) 
 void Graph::addEdge()
 {
   char startV;
@@ -43,7 +57,7 @@ void Graph::addEdge()
   cin.get(endV);
   if(endV == startV) 
   {
-    cout << "Bruh you can't make an edge like that" << endl; 
+    cout << "A node can't have an edge with itself! D:" << endl; 
     cin.ignore();
     return;
   }
@@ -52,10 +66,14 @@ void Graph::addEdge()
   cin.getline(weight, 10);
   int x = -1;
   int y = -1;
-  for(int i = 0; i < 20; i++) if(lables[i] == startV) x = i;
-  for(int i = 0; i < 20; i++) if(lables[i] == endV) y = i;
-  if(x == -1 || y == -1) cout << "one of these verticies doesn't exist" << endl;
-  else graph[x][y] = atoi(weight);
+  for(int i = 0; i < 20; i++) if(vertexes[i] && vertexes[i]->lable == startV) x = i;
+  for(int i = 0; i < 20; i++) if(vertexes[i] && vertexes[i]->lable == endV) y = i;
+  if(x == -1 || y == -1) cout << "one of those verticies doesn't exist" << endl;
+  else 
+  {
+    graph[x][y] = atoi(weight);
+    cout << "Edge added" << endl;
+  }
 }
 
 void Graph::removeVertex()
@@ -65,16 +83,20 @@ void Graph::removeVertex()
   cin.get(lable);
   for(int i = 0; i < 20; i++) 
   {
-    if(lables[i] == lable) 
+    if(vertexes[i] && vertexes[i]->lable == lable) 
     {
-      lables[i] = ' ';
+      vertexes[i] = NULL;
       for(int j = 0; j < 20; j++) 
       {
         graph[i][j] = -2;
         graph[j][i] = -2;
       }
+      cout << "Vertex removed" << endl;
+      return;
     }
   }
+  cout << "This vertex doesn't exist" << endl;
+  cin.ignore();
 }
 
 void Graph::removeEdge()
@@ -84,15 +106,42 @@ void Graph::removeEdge()
   cin.getline(weight, 10);
   for(int i = 0; i < 20; i++) for(int j = 0; j < 20; j++) 
     if(graph[i][j] == atoi(weight)) graph[i][j] = -1;
+  cout << "Edge removed" << endl;
+}
+
+void Graph::shortestPath()
+{
+  /*
+  char input;
+  Node* startV = new Node();;
+  Node* endV;
+  Node* visited[20]; 
+  Node* unvisited[20];
+  int j = 0;
+  cout << "From vertex: " << endl;
+  cin.get(input);
+  for(int i = 0; i < 20; i++) if(vertexes[i] == input) start
+  startV = 
+  startV->
+  for(int i = 0; i < 20; i++)
+  cout << "To vertex: " << endl;
+  cin.get(input);
+  cin.ignore();
+  int currentV = startV;
+  while()
+  {
+   
+  } */
+  
 }
 
 void Graph::printAdjacencies()
 {
-  for(int i = 0; i < 20; i++) if(lables[i] != ' ') cout << "   " << lables[i]; 
+  for(int i = 0; i < 20; i++) if(vertexes[i] != NULL) cout << "   " << vertexes[i]->lable; 
   cout << endl;
   for(int i = 0; i < 20; i++) 
   {
-    if(lables[i] != ' ') cout << lables[i] << "  ";
+    if(vertexes[i] != NULL) cout << vertexes[i]->lable << "  ";
     else continue;
     for(int j = 0; j < 20; j++)
     {

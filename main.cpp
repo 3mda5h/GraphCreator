@@ -10,7 +10,7 @@ int main()
   char input[10];
   while(strcmp(input, "quit") != 0)
   {
-    cout << "enter AV (add vertex), AE (add edge), RV (remove vertex), RE (remove edge), or PRINT" << endl;
+    cout << "Enter AV (add vertex), AE (add edge), RV (remove vertex), RE (remove edge), SP (shortest path), or PRINT" << endl;
     cin.getline(input, 10);
     for(int i = 0;i < strlen(input); i++) input[i] = tolower(input[i]);
     if(strcmp(input, "av") == 0) graph->addVertex();
@@ -18,5 +18,6 @@ int main()
     else if(strcmp(input, "ae") == 0) graph->addEdge();
     else if(strcmp(input, "rv") == 0) graph->removeVertex(); 
     else if(strcmp(input, "re") == 0) graph->removeEdge();
+    else if(strcmp(input, "sp") == 0) graph->shortestPath();
   }
 }

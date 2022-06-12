@@ -5,6 +5,15 @@
 
 using namespace std;
 
+struct Vertex
+{
+  int shortestD = 1000000; //shortest distance from starting vertex
+  Vertex* previousV = NULL; //vertex we just visited to get here
+  int indexInMatrix = -1;
+  char lable = ' ';
+  
+};
+
 class Graph
 {
   public:
@@ -14,10 +23,11 @@ class Graph
   void addEdge();
   void removeVertex();
   void removeEdge();
+  void shortestPath();
   private:
   int graph[20][20];
   int index;
-  char lables[20];
+  Vertex* vertexes[20];
 };
 
 #endif
