@@ -62,10 +62,29 @@ int main()
       graph->addVertex(l);
       l = 'B';
       graph->addVertex(l);
+      l = 'C';
+      graph->addVertex(l);
+      l = 'D';
+      graph->addVertex(l);
       char s = 'A';
       char e = 'B';
-      int w = 3;
+      int w = 7;
       graph->addEdge(s, e, w);
+      e = 'C';
+      w = 1;
+      graph->addEdge(s, e, w);
+      s = 'B';
+      e = 'D';
+      w = 8;
+      graph->addEdge(s, e, w);
+      s = 'C';
+      e = 'D';
+      w = 2;
+      graph->addEdge(s, e, w);
+      s = 'A';
+      e = 'D';
+      graph->shortestPath(s, e);
     }
   }
+  cout << "here ";
 }

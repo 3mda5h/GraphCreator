@@ -2,24 +2,10 @@
   "files": {
     "Graph.cpp": [
       {
-        "id": "326b8438-e9aa-414a-b3bf-606209b0684b",
-        "line": 100,
-        "version": 9338,
-        "index": 2541
-      },
-      {
-        "id": "5083de36-b939-4bdf-ba8e-7199a5c47ca6",
-        "line": 164,
-        "version": 9338,
-        "index": 4743
-      }
-    ],
-    "main.cpp": [
-      {
-        "id": "7849c43c-b23e-4768-915c-23d7fa0c73ea",
-        "line": 59,
-        "version": 1919,
-        "index": 1583
+        "id": "d4aae0ab-8f09-4bbc-a094-6fcac8e2a5eb",
+        "line": 98,
+        "version": 12700,
+        "index": 2467
       }
     ]
   }

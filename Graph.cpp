@@ -1,7 +1,10 @@
 #include "Graph.h"
 #include <iostream>
 #include <cstring>
-#include <vector>
+#include <queue>
+#include <set>
+#include <climits>
+//#include <vector>
 
 using namespace std;
 
@@ -42,7 +45,7 @@ void Graph::addVertex(char newLable)
   cout << "Vertex added" << endl;
 }
 
-//adds edge (connection between to vertexes) 
+//adds edge (connection between two vertexes) 
 void Graph::addEdge(char startV, char endV, int weight)
 {
   cout << "weight: " << weight << endl;
@@ -94,81 +97,86 @@ void Graph::removeEdge()
 
 void Graph::shortestPath(char startL, char endL)
 {
-  cout << "end lable: " << endL << endl;
   Vertex* startV;
   Vertex* endV;
-  vector<Vertex*> visited;
-  vector<Vertex*> unvisited;
-  for(int i = 0; i < 20; i++) if(vertexes[i] != NULL) unvisited.push_back(vertexes[i]); 
+  Vertex* unvisited[20];
+  for(int i = 0; i < 20; i++) if(vertexes[i] != NULL) unvisited[i] = vertexes[i];
   for(int i = 0; i < 20; i++) if(vertexes[i] && vertexes[i]->lable == startL) startV = vertexes[i];
   for(int i = 0; i < 20; i++) if(vertexes[i] && vertexes[i]->lable == endL) endV = vertexes[i];
-  cout << "end vertex: " << endV->lable << endl;
 
   Vertex* current = startV;
-  int distanceTraveled = 0; //total distance from current vertex to start vertex
+  int totalDistance = 0; //total distance from current vertex to start vertex
   int distance = 0; //distance of a neighbor from current vertex
-  Vertex* closestN; //unvisited neighbor closest to the starting vertex
-  while(current != endV)
+  //Vertex* closestN = NULL; //unvisited neighbor closest to the starting vertex
+  while(smallestUnvisited(unvisited) != NULL)
   {
     //get neighbors
     for(int i = 0; i < 20; i++)
     {
-      //cout << "current index in matrix: " << current->indexInMatrix << ", " << i << endl;
-      /* for(int i = 0; i < 20; i++) 
-        {
-          for(int j = 0; j < 20; j++) cout << graph[i][j];
-          cout << endl;
-          } */
-      if(graph[current->indexInMatrix][i] > -1 && indexOf(vertexes[i], unvisited) != -1)  //if there is a connection with an unvisited neighbor
+      if(graph[current->indexInMatrix][i] > -1)  //if there is a connection
       {
-        distance = graph[i][current->indexInMatrix]; //distance of this edge
-        if(vertexes[i]->shortestD > distance + distanceTraveled) vertexes[i]->shortestD = distance + distanceTraveled;
-        if(distance + distanceTraveled < closestN->shortestD) closestN = vertexes[i];
-        closestN->shortestD = distance + distanceTraveled;
-        closestN->previousV = current;
-        distanceTraveled = distance + distanceTraveled;
-        unvisited.erase(unvisited.begin() + indexOf(current, unvisited));
+        cout << "current is " << current->lable << " and we are visiting " << vertexes[i]->lable << endl;
+        distance = graph[current->indexInMatrix][i]; //distance of this edge
+        cout << "distance of " << current->lable << " from " << vertexes[i]->lable << " is " << distance << endl;
+        //cout << "closest neighbor to current vertex " << current->lable << " is " << closestN->lable << "with a distance of "
+        if(vertexes[i]->shortestD > distance + totalDistance) 
+        {
+          vertexes[i]->shortestD = distance + totalDistance;
+          vertexes[i]->previousV = current;
+        }
+        /*if(closestN == NULL || distance + totalDistance < closestN->shortestD) 
+        {
+          closestN = vertexes[i];
+          cout << "the closest vertex from " << current->lable << " is " << vertexes[i]->lable << endl;
+        } */
+        unvisited[current->indexInMatrix] = NULL;
       }
     }
-    current = closestN;
+    //totalDistance = closestN->shortestD;
+   current = smallestUnvisited(unvisited);
   }
-
+  
   char path[20];
+  for(int i = 0; i < 20; i++) path[i] = ' ';
+  path[0] = startV->lable;
   cout << "The shortest path is: ";
-  int i = 0;
+  int i = 19;
   while(current != startV)
   {
     path[i] = current->lable;
     current = current->previousV;
-    i++;
+    i--;
   }
-  for(int i = 0; i < sizeOf()
+  for(int i = 0; i < 20; i++) if(path[i] != ' ') cout << path[i] << ", "; 
   cout << endl;
-  cout << "a total of" << distanceTraveled << endl;
+  cout << "With a total distance of: " << totalDistance << endl;
+  cout << endl;
   
-
   //reset the stuff
   for(int i = 0; i < 20; i++)
   {
     if(vertexes[i])
     {
-      vertexes[i]->shortestD = 1000000;
+      vertexes[i]->shortestD = INT_MAX;
       vertexes[i]->previousV = NULL;
     }
-  }
+  } 
+}
+
+Vertex* Graph::smallestUnvisited(Vertex* unvisited[20])
+{
+  Vertex* smallestSoFar = NULL;
+  for(int i = 0; i < 20; i++) 
+    if(unvisited[i] && 
+      (smallestSoFar == NULL 
+      || unvisited[i]->shortestD < smallestSoFar->shortestD)) 
+      smallestSoFar = unvisited[i];
+  return smallestSoFar;
 }
 
 int Graph::indexOf(Vertex* vertex, vector<Vertex*> unvisited)
 {
-  for(int i = 0; i < unvisited.size(); i++)
-  {
-    if(unvisited[i] == vertex)
-    {
-      cout << "I'm returning: " << i << endl;
-      return i;
-    }
-  }
-  cout << "I'm returning: -1" << endl;
+  for(int i = 0; i < unvisited.size(); i++) if(unvisited[i] == vertex) return i;
   return -1;
 }
 

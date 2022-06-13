@@ -3,16 +3,17 @@
 
 #include <iostream>
 #include <vector>
+#include <climits>
+#include <set>
 
 using namespace std;
 
 struct Vertex
 {
-  int shortestD = 1000000; //shortest distance from starting vertex
+  int shortestD = INT_MAX; //shortest distance from starting vertex
   Vertex* previousV = NULL; //vertex we just visited to get here
   int indexInMatrix = -1;
   char lable = ' ';
-  
 };
 
 class Graph
@@ -26,6 +27,7 @@ class Graph
   void removeEdge();
   void shortestPath(char startL, char endL);
   int indexOf(Vertex* vertex, vector<Vertex*> unvisited);
+  Vertex* smallestUnvisited(Vertex* unvisited[]);
   private:
   int graph[20][20];
   int index;
