@@ -27,6 +27,7 @@ class Graph
   void removeEdge();
   void shortestPath(char startL, char endL);
   Vertex* closestUnvisited(Vertex* unvisited[]);
+  void resetVertexes();
   private:
   int graph[20][20];
   int index;

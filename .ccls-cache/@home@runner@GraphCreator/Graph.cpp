@@ -1,10 +1,7 @@
 #include "Graph.h"
 #include <iostream>
 #include <cstring>
-#include <queue>
-#include <set>
 #include <climits>
-//#include <vector>
 
 using namespace std;
 
@@ -12,7 +9,7 @@ Graph::Graph()
 {
   // -2 = node does not exist    -1 = node exists but no connection,  positive # = weight of connection
   for(int i = 0; i < 20; i++) for(int j = 0; j < 20; j++) graph[i][j] = -2; //graph[][]keeps track of connections   
-  for(int i = 0; i < 20; i++) vertexes[i] = NULL; //vertexes[] keeps track of names of vertexes
+  for(int i = 0; i < 20; i++) vertexes[i] = NULL; //vertexes[] keeps track of the actual vertexes
 }
 
 //adds vertex (node) to adjacency matrix
@@ -27,7 +24,6 @@ void Graph::addVertex(char newLable)
       return;
     }
   }
-  //cin.ignore();
   int index;
   for(int i = 0; i < 20; i++) 
   {
@@ -45,7 +41,7 @@ void Graph::addVertex(char newLable)
   cout << "Vertex added" << endl;
 }
 
-//adds edge (connection between two vertexes) 
+//adds edge (connection between two vertexes with a certain distance/weight) 
 void Graph::addEdge(char startV, char endV, int weight)
 {
   cout << "weight: " << weight << endl;
@@ -53,7 +49,7 @@ void Graph::addEdge(char startV, char endV, int weight)
   int y = -1;
   for(int i = 0; i < 20; i++) if(vertexes[i] && vertexes[i]->lable == startV) x = i;
   for(int i = 0; i < 20; i++) if(vertexes[i] && vertexes[i]->lable == endV) y = i;
-  if(x == -1 || y == -1) cout << "one of those verticies doesn't exist" << endl;
+  if(x == -1 || y == -1) cout << "One of these vertices doesn't exist" << endl;
   else 
   {
     graph[x][y] = weight;
@@ -61,6 +57,7 @@ void Graph::addEdge(char startV, char endV, int weight)
   }
 }
 
+//removes vertex and its edges from adjacency matrix
 void Graph::removeVertex()
 {
   char lable;
@@ -85,6 +82,7 @@ void Graph::removeVertex()
   cin.ignore();
 }
 
+//removes edge with a given weight
 void Graph::removeEdge()
 {
   char weight[10];
@@ -95,6 +93,7 @@ void Graph::removeEdge()
   cout << "Edge removed" << endl;
 }
 
+//uses Dikjrsrta's algormithm to find the shortest path and distance from given start vertex to given end vertex
 void Graph::shortestPath(char startL, char endL)
 {
   Vertex* startV;
@@ -109,12 +108,14 @@ void Graph::shortestPath(char startL, char endL)
   }
   for(int i = 0; i < 20; i++) if(vertexes[i] && vertexes[i]->lable == startL) startV = vertexes[i];
   for(int i = 0; i < 20; i++) if(vertexes[i] && vertexes[i]->lable == endL) endV = vertexes[i];
+  if(startV ==NULL || endV == NULL)
+  {
+    cout << "One of these vertices doesn't exist" << endl;
+  }
 
   Vertex* current = startV;
   startV->shortestD = 0;
-  //int currentDistance = 0; //total distance from current vertex to start vertex
-  int distance = 0; //distance of a neighbor from current vertex
-  //Vertex* closestN = NULL; //unvisited neighbor closest to the starting vertex
+  int distance = 0; //distance of a neighbor vertex from current vertex
   while(current != NULL)
   {
     //get neighbors
@@ -122,19 +123,26 @@ void Graph::shortestPath(char startL, char endL)
     {
       if(graph[current->indexInMatrix][i] > -1)  //if there is a connection
       {
-        cout << "current is " << current->lable << " and we are visiting " << vertexes[i]->lable << endl;
-        distance = graph[current->indexInMatrix][i]; //distance of this edge
-        cout << "distance of " << current->lable << " from " << vertexes[i]->lable << " is " << distance << endl;
-        if(vertexes[i]->shortestD > distance + current->shortestD) 
+        //cout << "current is " << current->lable << " and we are visiting " << vertexes[i]->lable << endl;
+        distance = graph[current->indexInMatrix][i]; 
+        //cout << "distance of " << current->lable << " from " << vertexes[i]->lable << " is " << distance << endl;
+        if(vertexes[i]->shortestD > distance + current->shortestD) //if we've found a shorter path from the start vertex to vertexes[i]
         {
           vertexes[i]->shortestD = distance + current->shortestD;
           vertexes[i]->previousV = current;
-          cout<< "shortest distance of " << vertexes[i]->lable << " is now " << vertexes[i]->shortestD << endl;
+          //cout<< "shortest distance of " << vertexes[i]->lable << " is now " << vertexes[i]->shortestD << endl;
         }
       }
     }
-    unvisited[current->indexInMatrix] = NULL;
-    current = smallestUnvisited(unvisited);
+    unvisited[current->indexInMatrix] = NULL; //remove current from unvisited list
+    current = closestUnvisited(unvisited);
+  }
+  if(endV->previousV == NULL) 
+  {
+    cout << "There is no path" << endl;
+    cout << endl;
+    resetVertexes();
+    return;
   }
   
   char path[20];
@@ -143,7 +151,7 @@ void Graph::shortestPath(char startL, char endL)
   cout << "The shortest path is: ";
   int i = 19;
   current = endV;
-  while(current != startV)
+  while(current != startV) //backtrack from endV to startV through previous vertexes
   {
     path[i] = current->lable;
     current = current->previousV;
@@ -153,8 +161,11 @@ void Graph::shortestPath(char startL, char endL)
   cout << endl;
   cout << "With a total distance of: " << endV->shortestD << endl;
   cout << endl;
-  
-  //reset the stuff
+  resetVertexes();  
+}
+
+void Graph::resetVertexes()
+{
   for(int i = 0; i < 20; i++)
   {
     if(vertexes[i])
@@ -165,7 +176,8 @@ void Graph::shortestPath(char startL, char endL)
   } 
 }
 
-Vertex* Graph::smallestUnvisited(Vertex* unvisited[20])
+//returns vertex in unvisited array that is closest to the starting vertex
+Vertex* Graph::closestUnvisited(Vertex* unvisited[20])
 {
   int smallestSoFar = INT_MAX;
   Vertex* closest = NULL;
@@ -180,12 +192,7 @@ Vertex* Graph::smallestUnvisited(Vertex* unvisited[20])
   return closest;
 }
 
-int Graph::indexOf(Vertex* vertex, vector<Vertex*> unvisited)
-{
-  for(int i = 0; i < unvisited.size(); i++) if(unvisited[i] == vertex) return i;
-  return -1;
-}
-
+//prints the adjacency matrix showing all edges between nodes and their weights
 void Graph::printAdjacencies()
 {
   for(int i = 0; i < 20; i++) if(vertexes[i] != NULL) cout << "   " << vertexes[i]->lable; 

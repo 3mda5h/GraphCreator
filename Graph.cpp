@@ -49,7 +49,7 @@ void Graph::addEdge(char startV, char endV, int weight)
   int y = -1;
   for(int i = 0; i < 20; i++) if(vertexes[i] && vertexes[i]->lable == startV) x = i;
   for(int i = 0; i < 20; i++) if(vertexes[i] && vertexes[i]->lable == endV) y = i;
-  if(x == -1 || y == -1) cout << "one of those verticies doesn't exist" << endl;
+  if(x == -1 || y == -1) cout << "One of these vertices doesn't exist" << endl;
   else 
   {
     graph[x][y] = weight;
@@ -108,6 +108,10 @@ void Graph::shortestPath(char startL, char endL)
   }
   for(int i = 0; i < 20; i++) if(vertexes[i] && vertexes[i]->lable == startL) startV = vertexes[i];
   for(int i = 0; i < 20; i++) if(vertexes[i] && vertexes[i]->lable == endL) endV = vertexes[i];
+  if(startV ==NULL || endV == NULL)
+  {
+    cout << "One of these vertices doesn't exist" << endl;
+  }
 
   Vertex* current = startV;
   startV->shortestD = 0;
@@ -133,6 +137,13 @@ void Graph::shortestPath(char startL, char endL)
     unvisited[current->indexInMatrix] = NULL; //remove current from unvisited list
     current = closestUnvisited(unvisited);
   }
+  if(endV->previousV == NULL) 
+  {
+    cout << "There is no path" << endl;
+    cout << endl;
+    resetVertexes();
+    return;
+  }
   
   char path[20];
   for(int i = 0; i < 20; i++) path[i] = ' ';
@@ -150,8 +161,11 @@ void Graph::shortestPath(char startL, char endL)
   cout << endl;
   cout << "With a total distance of: " << endV->shortestD << endl;
   cout << endl;
-  
-  //reset vertexes
+  resetVertexes();  
+}
+
+void Graph::resetVertexes()
+{
   for(int i = 0; i < 20; i++)
   {
     if(vertexes[i])

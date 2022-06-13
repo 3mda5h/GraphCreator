@@ -26,6 +26,7 @@ int main()
       cout << "vertex lable?" << endl;
       cin.get(newLable);
       graph->addVertex(newLable);
+      cin.ignore();
     }
     else if(strcmp(input, "print") == 0) graph->printAdjacencies();
     else if(strcmp(input, "ae") == 0) 
@@ -62,6 +63,7 @@ int main()
       cin.ignore();
       cin.get(endL);
       graph->shortestPath(startL, endL);
+      cin.ignore();
     }
      //for testing 
     else if(strcmp(input, "test") == 0)
@@ -133,5 +135,4 @@ int main()
       graph->addEdge(s, e, w);
     }
   }
-  cout << "here ";
 }
