@@ -20,7 +20,6 @@ void Graph::addVertex(char newLable)
     if(vertexes[i] && vertexes[i]->lable == newLable)
     {
       cout << "A vertex with that lable already exists!" << endl;
-      cin.ignore();
       return;
     }
   }
@@ -58,11 +57,8 @@ void Graph::addEdge(char startV, char endV, int weight)
 }
 
 //removes vertex and its edges from adjacency matrix
-void Graph::removeVertex()
+void Graph::removeVertex(char lable)
 {
-  char lable;
-  cout << "Lable?" << endl;
-  cin.get(lable);
   for(int i = 0; i < 20; i++) 
   {
     if(vertexes[i] && vertexes[i]->lable == lable) 
@@ -79,18 +75,24 @@ void Graph::removeVertex()
     }
   }
   cout << "This vertex doesn't exist" << endl;
-  cin.ignore();
 }
 
 //removes edge with a given weight
-void Graph::removeEdge()
+void Graph::removeEdge(char startL, char endL)
 {
-  char weight[10];
-  cout << "Weight?" << endl;
-  cin.getline(weight, 10);
-  for(int i = 0; i < 20; i++) for(int j = 0; j < 20; j++) 
-    if(graph[i][j] == atoi(weight)) graph[i][j] = -1;
+  Vertex* startV = NULL;
+  Vertex* endV = NULL;
+  for(int i = 0; i < 20; i++) if(vertexes[i] && vertexes[i]->lable == startL) startV = vertexes[i];
+  for(int i = 0; i < 20; i++) if(vertexes[i] && vertexes[i]->lable == endL) endV = vertexes[i];
+  if(startV == NULL || endV == NULL) 
+  {
+    cout << "One of these vertices doesn't exist" << endl;
+    cout << endl;
+    return;
+  }
+  graph[startV->indexInMatrix][endV->indexInMatrix] = -1;
   cout << "Edge removed" << endl;
+  cout << endl;
 }
 
 //uses Dikjrsrta's algormithm to find the shortest path and distance from given start vertex to given end vertex
@@ -111,6 +113,7 @@ void Graph::shortestPath(char startL, char endL)
   if(startV ==NULL || endV == NULL)
   {
     cout << "One of these vertices doesn't exist" << endl;
+    return;
   }
 
   Vertex* current = startV;

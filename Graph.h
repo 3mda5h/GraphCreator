@@ -23,8 +23,8 @@ class Graph
   void addVertex(char newLable);
   void printAdjacencies();
   void addEdge(char startV, char endV, int weight);
-  void removeVertex();
-  void removeEdge();
+  void removeVertex(char lable);
+  void removeEdge(char startL, char endL);
   void shortestPath(char startL, char endL);
   Vertex* closestUnvisited(Vertex* unvisited[]);
   void resetVertexes();

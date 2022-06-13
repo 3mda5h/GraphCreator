@@ -51,8 +51,26 @@ int main()
       int w = atoi(weight);
       graph->addEdge(startV, endV, w);
     }
-    else if(strcmp(input, "rv") == 0) graph->removeVertex(); 
-    else if(strcmp(input, "re") == 0) graph->removeEdge();
+    else if(strcmp(input, "rv") == 0) 
+    {
+      char lable;
+      cout << "Lable?" << endl;
+      cin.get(lable);
+      graph->removeVertex(lable); 
+      cin.ignore();
+    }
+    else if(strcmp(input, "re") == 0) 
+    {
+      char startL;
+      char endL;
+      cout << "From vertex?" << endl;
+      cin.get(startL);
+      cout << "To vertex?" << endl;
+      cin.ignore();
+      cin.get(endL);
+      graph->removeEdge(startL, endL);
+      cin.ignore();
+    }
     else if(strcmp(input, "sp") == 0) 
     {
       char startL;
