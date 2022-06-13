@@ -1,3 +1,10 @@
+/*Graph Creator - user can add and delete vertexes from a graph. Edges between vertexes are
+kept track of using an adjacency matrix. Dikjrsrta's algorithm can be used to find the shortest
+path and distance between two vertexes 
+Emily MacPherson
+6/13/22
+*/
+
 #include <iostream>
 #include <cstring>
 #include "Graph.h"
@@ -56,8 +63,10 @@ int main()
       cin.get(endL);
       graph->shortestPath(startL, endL);
     }
+     //for testing 
     else if(strcmp(input, "test") == 0)
     {
+      /*
       char l = 'A';
       graph->addVertex(l);
       l = 'B';
@@ -84,6 +93,10 @@ int main()
       s = 'A';
       e = 'D';
       graph->shortestPath(s, e);
+      */
+
+      char l = 'A';
+      graph->addVertex(l);
     }
   }
   cout << "here ";

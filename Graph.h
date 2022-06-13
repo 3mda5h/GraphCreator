@@ -26,8 +26,7 @@ class Graph
   void removeVertex();
   void removeEdge();
   void shortestPath(char startL, char endL);
-  int indexOf(Vertex* vertex, vector<Vertex*> unvisited);
-  Vertex* smallestUnvisited(Vertex* unvisited[]);
+  Vertex* closestUnvisited(Vertex* unvisited[]);
   private:
   int graph[20][20];
   int index;

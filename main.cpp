@@ -1,3 +1,10 @@
+/*Graph Creator - user can add and delete vertexes from a graph. Edges between vertexes are
+kept track of using an adjacency matrix. Dikjrsrta's algorithm can be used to find the shortest
+path and distance between two vertexes 
+Emily MacPherson
+6/13/22
+*/
+
 #include <iostream>
 #include <cstring>
 #include "Graph.h"
@@ -56,8 +63,10 @@ int main()
       cin.get(endL);
       graph->shortestPath(startL, endL);
     }
+     //for testing 
     else if(strcmp(input, "test") == 0)
     {
+      /*
       char l = 'A';
       graph->addVertex(l);
       l = 'B';
@@ -84,6 +93,44 @@ int main()
       s = 'A';
       e = 'D';
       graph->shortestPath(s, e);
+      */
+
+      char l = 'A';
+      graph->addVertex(l);
+      l = 'B';
+      graph->addVertex(l);
+      l = 'C';
+      graph->addVertex(l);
+      l = 'D';
+      graph->addVertex(l);
+      l = 'E';
+      graph->addVertex(l);
+      l = 'F';
+      graph->addVertex(l);
+      int w = 7;
+      char s = 'A';
+      char e = 'B';
+      graph->addEdge(s, e, w);
+      e = 'C';
+      w = 8;
+      graph->addEdge(s, e, w);
+      e = 'D';
+      w = 1;
+      graph->addEdge(s, e, w);
+      s = 'B';
+      e = 'E';
+      w = 3;
+      graph->addEdge(s, e, w);
+      s = 'C';
+      e = 'F';
+      w = 1;
+      graph->addEdge(s, e, w);
+      s = 'D';
+      w = 15;
+      graph->addEdge(s, e, w);
+      s = 'E';
+      w = 3;
+      graph->addEdge(s, e, w);
     }
   }
   cout << "here ";
