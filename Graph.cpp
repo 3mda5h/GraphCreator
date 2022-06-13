@@ -111,6 +111,7 @@ void Graph::shortestPath(char startL, char endL)
   for(int i = 0; i < 20; i++) if(vertexes[i] && vertexes[i]->lable == endL) endV = vertexes[i];
 
   Vertex* current = startV;
+  startV->shortestD = 0;
   //int currentDistance = 0; //total distance from current vertex to start vertex
   int distance = 0; //distance of a neighbor from current vertex
   //Vertex* closestN = NULL; //unvisited neighbor closest to the starting vertex
@@ -128,6 +129,7 @@ void Graph::shortestPath(char startL, char endL)
         {
           vertexes[i]->shortestD = distance + current->shortestD;
           vertexes[i]->previousV = current;
+          cout<< "shortest distance of " << vertexes[i]->lable << " is now " << vertexes[i]->shortestD << endl;
         }
       }
     }
