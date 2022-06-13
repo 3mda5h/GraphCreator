@@ -2,6 +2,7 @@
 #define GRAPH_H
 
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -18,12 +19,13 @@ class Graph
 {
   public:
   Graph();
-  void addVertex();
+  void addVertex(char newLable);
   void printAdjacencies();
-  void addEdge();
+  void addEdge(char startV, char endV, int weight);
   void removeVertex();
   void removeEdge();
-  void shortestPath();
+  void shortestPath(char startL, char endL);
+  int indexOf(Vertex* vertex, vector<Vertex*> unvisited);
   private:
   int graph[20][20];
   int index;
